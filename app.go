@@ -65,15 +65,12 @@ func main() {
 		Addr: ":" + port,
 	}
 
-	_, err := os.Stat("/cert/tls.crt")
-	if err != nil {
-		log.Fatal("You need to provide a certificate")
+	_, errCrt := os.Stat("/cert/tls.crt")
+	_, errKey := os.Stat("/cert/tls.key")
+	if errCrt != nil || errKey != nil {
+		log.Fatal(server.ListenAndServe())
 	}
 
-	_, err = os.Stat("/cert/tls.key")
-	if err != nil {
-		log.Fatal("You need to provide a certificate")
-	}
 	log.Fatal(server.ListenAndServeTLS("/cert/tls.crt", "/cert/tls.key"))
 }
 
